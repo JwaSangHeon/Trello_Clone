@@ -1,12 +1,14 @@
-import { auth, currentUser } from "@clerk/nextjs";
+"use client";
 
-const ProtectedPage = async () => {
-  const user = await currentUser();
-  const { userId } = auth();
+import { useAuth, useUser } from "@clerk/nextjs";
+
+const ProtectedPage = () => {
+  const { userId } = useAuth();
+  const { user } = useUser();
   return (
     <div>
-      {user?.firstName}
       {userId}
+      {user?.firstName}
     </div>
   );
 };
