@@ -27,6 +27,7 @@ export const Navbar = () => {
           <Logo />
         </div>
         <Button
+          variant="primary"
           size="sm"
           className="
           rounded-sm
@@ -40,6 +41,7 @@ export const Navbar = () => {
           Create
         </Button>
         <Button
+          variant="primary"
           size="sm"
           className="rounded-sm
           block
