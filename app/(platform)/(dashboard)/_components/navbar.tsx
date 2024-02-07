@@ -6,19 +6,19 @@ import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
 export const Navbar = () => {
   return (
-    <div
+    <nav
       className="
       fixed
-      px-4
-      z-50
       top-0
+      z-50
+      w-full
+      px-4
       bg-white
       border-b
-      w-full
+      shadow-sm
       h-14
       flex
       items-center
-      shadow-sm
     "
     >
       {/* Mobile sidebar */}
@@ -43,7 +43,8 @@ export const Navbar = () => {
         <Button
           variant="primary"
           size="sm"
-          className="rounded-sm
+          className="
+          rounded-sm
           block
           md:hidden
           "
@@ -55,8 +56,8 @@ export const Navbar = () => {
         <OrganizationSwitcher
           hidePersonal
           afterCreateOrganizationUrl="/organization/:id"
-          afterLeaveOrganizationUrl="/select-org"
           afterSelectOrganizationUrl="/organization/:id"
+          afterLeaveOrganizationUrl="/select-org"
           appearance={{
             elements: {
               rootBox: {
@@ -79,6 +80,6 @@ export const Navbar = () => {
           }}
         />
       </div>
-    </div>
+    </nav>
   );
 };
