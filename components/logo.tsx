@@ -21,7 +21,7 @@ export const Logo = () => {
         md:flex
       "
       >
-        <Image src="/logo.svg" alt="logo" height={30} width={30} />
+        <Image src="/logo.png" alt="logo" height={30} width={30} />
         <p
           className={cn("text-lg text-neutral-700 pt-1", headingFont.className)}
         >
