@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import MobileSidebar from "./mobile-sidebar";
 
 export const Navbar = () => {
   return (
@@ -21,7 +22,7 @@ export const Navbar = () => {
       items-center
     "
     >
-      {/* Mobile sidebar */}
+      <MobileSidebar />
       <div className="flex items-center gap-x-4">
         <div className="hidden md:flex">
           <Logo />
