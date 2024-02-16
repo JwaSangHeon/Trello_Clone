@@ -1,11 +1,11 @@
 "use client";
 
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { Activity, CreditCard, Layout, Settings } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useRouter, usePathname } from "next/navigation";
 import { AccordionContent } from "@radix-ui/react-accordion";
 import { Button } from "@/components/ui/button";
 
