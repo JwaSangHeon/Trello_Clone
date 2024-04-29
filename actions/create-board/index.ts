@@ -10,15 +10,40 @@ import { InputType, ReturnType } from "./types";
 import { CreateBoard } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth();
+  const { userId, orgId } = auth();
 
-  if (!userId) {
+  if (!userId || !orgId) {
     return {
       error: "로그인되지 않았습니다.",
     };
   }
 
-  const { title } = data;
+  const { title, image } = data;
+
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHtml, imageUserName] =
+    image.split("|");
+
+  console.log();
+
+  if (
+    !imageId ||
+    !imageThumbUrl ||
+    !imageFullUrl ||
+    !imageLinkHtml ||
+    !imageUserName
+  ) {
+    return {
+      error: "실패했습니다.",
+    };
+  }
+
+  console.log({
+    imageId,
+    imageThumbUrl,
+    imageFullUrl,
+    imageLinkHtml,
+    imageUserName,
+  });
 
   let board;
 
@@ -26,6 +51,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     board = await db.board.create({
       data: {
         title,
+        orgId,
+        imageId,
+        imageThumbUrl,
+        imageFullUrl,
+        imageUserName,
+        imageLinkHtml,
       },
     });
   } catch (error) {
