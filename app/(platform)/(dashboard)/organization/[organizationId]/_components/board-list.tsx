@@ -8,6 +8,7 @@ import { FormPopover } from "@/components/form/form-popover";
 import { Hint } from "@/components/hint";
 import { Board } from "@prisma/client";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BoardList = async () => {
   const { orgId } = auth();
@@ -58,6 +59,21 @@ const BoardList = async () => {
           </div>
         </FormPopover>
       </div>
+    </div>
+  );
+};
+
+BoardList.Skeleton = function SkeletonBoardList() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
+      <Skeleton className="aspect-video w-full h-full p-2"></Skeleton>
     </div>
   );
 };
