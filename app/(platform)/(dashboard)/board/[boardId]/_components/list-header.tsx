@@ -7,6 +7,7 @@ import { List } from "@prisma/client";
 import { ElementRef, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
+import ListOptions from "./list-options";
 
 interface ListHeaderProps {
   data: List;
@@ -71,7 +72,7 @@ const ListHeader = ({ data }: ListHeaderProps) => {
   useEventListener("keydown", onKeyDown);
 
   return (
-    <div className="px-2 text-sm font-semibold">
+    <div className="px-2 text-sm font-semibold flex items-center justify-between">
       {isEditing ? (
         <form ref={formRef} action={handleSubmit}>
           <input hidden id="id" name="id" value={data.id} />
@@ -91,6 +92,7 @@ const ListHeader = ({ data }: ListHeaderProps) => {
           {title}
         </div>
       )}
+      <ListOptions onAddCard={() => {}} data={data} />
     </div>
   );
 };
