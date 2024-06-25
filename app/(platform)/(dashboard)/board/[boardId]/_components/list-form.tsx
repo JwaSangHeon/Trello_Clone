@@ -76,11 +76,11 @@ const ListForm = () => {
             errors={fieldErrors}
             id="title"
             className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition"
-            placeholder="Enter list title..."
+            placeholder="리스트의 제목을 입력해주세요."
           />
           <input hidden value={params.boardId} name="boardId" />
           <div className="flex items-center gap-x-1">
-            <FormSubmit>Add list</FormSubmit>
+            <FormSubmit>추가하기</FormSubmit>
             <Button size="sm" variant="ghost" onClick={disableEditing}>
               <X className="h-5 w-5" />
             </Button>
@@ -97,7 +97,7 @@ const ListForm = () => {
         className="bg-white/80 hover:bg-white/50 transition p-3 w-full rounded-md shadow-md flex items-center font-medium text-sm"
       >
         <Plus className="h-4 w-4 mr-2" />
-        Add a list
+        리스트 추가하기
       </button>
     </ListWrapper>
   );

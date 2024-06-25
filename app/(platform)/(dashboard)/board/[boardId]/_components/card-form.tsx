@@ -24,7 +24,7 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
     const formRef = useRef<ElementRef<"form">>(null);
     const { execute, fieldErrors } = useAction(createCard, {
       onSuccess: (data) => {
-        toast.success(`Card "${data.title}" created`);
+        toast.success(`"${data.title}" 카드가 만들어졌습니다.`);
         formRef.current?.reset();
       },
       onError: (error) => {
@@ -74,7 +74,7 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
           />
           <input hidden id="listId" name="listId" value={listId} />
           <div className="flex items-center gap-x-1">
-            <FormSubmit>Add Card</FormSubmit>
+            <FormSubmit>추가하기</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">
               <X className="h-5 w-5" />
             </Button>
@@ -92,7 +92,7 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
           variant="ghost"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add a Card
+          카드 추가하기
         </Button>
       </div>
     );
