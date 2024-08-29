@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, CSSProperties } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
 import { ListWithCard } from "@/types";
@@ -12,10 +12,19 @@ import { updateCardOrder } from "@/actions/update-card-order";
 import ListForm from "./list-form";
 import ListItem from "./list-item";
 import { toast } from "sonner";
+
+import DotLoader from "react-spinners/DotLoader";
+
 interface ListContainerProps {
   boardId: string;
   data: ListWithCard[];
 }
+
+const override: CSSProperties = {
+  position: "absolute",
+  top: "50%",
+  right: "50%",
+};
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
@@ -27,6 +36,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 
 const ListContainer = ({ boardId, data }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(data);
+  const [loading, setLoading] = useState(false);
 
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
@@ -66,12 +76,15 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
 
     // 리스트 드래그 앤 드롭
     if (type === "list") {
+      setLoading(true);
       const items = reorder(orderedData, source.index, destination.index).map(
         (item, index) => ({ ...item, order: index })
       );
 
       setOrderedData(items);
-      executeUpdateListOrder({ items, boardId });
+      executeUpdateListOrder({ items, boardId }).then(() => {
+        setLoading(false);
+      });
     }
 
     // 카드 드래그 앤 드롭
@@ -99,6 +112,7 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
 
       // 같은 list에서 card가 이동하는 경우
       if (source.droppableId === destination.droppableId) {
+        setLoading(true);
         const reorderedCards = reorder(
           sourceList.cards,
           source.index,
@@ -112,9 +126,12 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
         sourceList.cards = reorderedCards;
 
         setOrderedData(newOrderedData);
-        executeUpdateCardOrder({ items: reorderedCards, boardId });
+        executeUpdateCardOrder({ items: reorderedCards, boardId }).then(() => {
+          setLoading(false);
+        });
       } else {
         // 다른 list에서 card가 이동하는 경우
+        setLoading(true);
         const [movedCard] = sourceList.cards.splice(source.index, 1);
 
         movedCard.listId = destination.droppableId;
@@ -129,30 +146,49 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
         });
 
         setOrderedData(newOrderedData);
-        executeUpdateCardOrder({ items: destinationList.cards, boardId });
+        executeUpdateCardOrder({ items: destinationList.cards, boardId }).then(
+          () => {
+            setLoading(false);
+          }
+        );
       }
     }
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="lists" type="list" direction="horizontal">
-        {(provided) => (
-          <ol
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="flex gap-x-3 h-full"
-          >
-            {orderedData.map((list, index) => {
-              return <ListItem key={list.id} index={index} data={list} />;
-            })}
-            {provided.placeholder}
-            <ListForm />
-            <div className="flex-shrink-0 w-1" />
-          </ol>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      {" "}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="lists" type="list" direction="horizontal">
+          {(provided) => (
+            <ol
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex gap-x-3 h-full"
+            >
+              {orderedData.map((list, index) => {
+                return <ListItem key={list.id} index={index} data={list} />;
+              })}
+              {provided.placeholder}
+              <ListForm />
+              <div className="flex-shrink-0 w-1" />
+            </ol>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {loading && (
+        <div className="bg-[rgba(255,255,255,0.7)] absolute top-0 left-0 w-screen h-screen z-100">
+          <DotLoader
+            color="#2B77AA"
+            loading={loading}
+            cssOverride={override}
+            size={50}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      )}
+    </>
   );
 };
 
