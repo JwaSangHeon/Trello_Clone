@@ -52,6 +52,10 @@ export const Description = ({ data }: DescriptionProps) => {
       queryClient.invalidateQueries({
         queryKey: ["card", data.id],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["card-logs", data.id],
+      });
       toast.success(`'${data.title}' 카드 가 업데이트 되었습니다.`);
       disableEditing();
     },
