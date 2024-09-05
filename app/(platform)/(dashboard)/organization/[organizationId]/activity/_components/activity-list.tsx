@@ -16,6 +16,9 @@ export const ActivityList = async () => {
     where: {
       orgId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return (
