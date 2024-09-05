@@ -10,6 +10,7 @@ import { InputType, ReturnType } from "./types";
 import { CreateBoard } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { incrementAvailableCount, hasAvailableCount } from "@/lib/org-limit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -17,6 +18,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   if (!userId || !orgId) {
     return {
       error: "로그인되지 않았습니다.",
+    };
+  }
+
+  const canCreate = await hasAvailableCount();
+
+  if (!canCreate) {
+    return {
+      error:
+        "무료로 생성 가능한 board의 갯수가 끝났습니다. 요금제를 업그레이드 해주세요.",
     };
   }
 
@@ -61,6 +71,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageLinkHtml,
       },
     });
+
+    await incrementAvailableCount();
 
     await createAuditLog({
       entityTitle: board.title,
