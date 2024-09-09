@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAvailableCount } from "@/lib/org-limit";
 import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { checkSubscirption } from "@/lib/subscription";
 
 const BoardList = async () => {
   const { orgId } = auth();
@@ -29,6 +30,7 @@ const BoardList = async () => {
   });
 
   const availableCount = await getAvailableCount();
+  const isPro = await checkSubscirption();
 
   return (
     <div className="space-y-4">
@@ -53,10 +55,12 @@ const BoardList = async () => {
             role="button"
             className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition"
           >
-            <p className="text-sm">Create new board</p>
-            <span className="text-xs">{`${
-              MAX_FREE_BOARDS - availableCount
-            } remaining`}</span>
+            <p className="text-sm">새로운 board 만들기</p>
+            <span className="text-xs">
+              {isPro
+                ? "무제한"
+                : `무료 board ${MAX_FREE_BOARDS - availableCount}개 남았습니다`}
+            </span>
             <Hint
               sideOffset={40}
               description={`무료 워크스페이스는 보드를 5개까지 만들 수 있습니다. 더 만드실려면 워크스페이스를 업데이트 해주세요.`}
